@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmtaholic.badminton.mapper.SiteMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.Site">
+		<id column="site_id" jdbcType="INTEGER" property="siteId" />
+		<result column="gymnasium_id" jdbcType="INTEGER"
+			property="gymnasiumId" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="price" jdbcType="DECIMAL" property="price" />
+		<result column="vip_price" jdbcType="DECIMAL"
+			property="vipPrice" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="site_no" jdbcType="VARCHAR" property="siteNo" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		site_id, gymnasium_id, `type`, price, vip_price, `status`,
+		`site_no`
+	</sql>
+	<select id="queryListByGymnasiumId"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from site
+		where gymnasium_id = #{gymnasiumId,jdbcType=INTEGER}
+		and `status` > -1
+	</select>
+
+	<select id="queryList" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from site
+		where site_id = #{siteId,jdbcType=INTEGER}
+		and `status` > -1
+	</select>
+
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from site
+		where site_id = #{siteId,jdbcType=INTEGER}
+		and `status` > -1
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from site
+		where site_id =
+		#{siteId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="site_id" keyProperty="siteId"
+		parameterType="com.bmtaholic.badminton.entity.Site"
+		useGeneratedKeys="true">
+		insert into site (gymnasium_id, `type`, price,
+		vip_price, `status`, `site_no`)
+		values
+		(#{gymnasiumId,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER},
+		#{price,jdbcType=DECIMAL},
+		#{vipPrice,jdbcType=DECIMAL},
+		#{status,jdbcType=INTEGER}, #{siteNo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="site_id"
+		keyProperty="siteId"
+		parameterType="com.bmtaholic.badminton.entity.Site"
+		useGeneratedKeys="true">
+		insert into site
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="gymnasiumId != null">
+				gymnasium_id,
+			</if>
+			<if test="type != null">
+				`type`,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="vipPrice != null">
+				vip_price,
+			</if>
+			<if test="status != null">
+				`status`,
+			</if>
+			<if test="siteNo != null">
+				site_no,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="gymnasiumId != null">
+				#{gymnasiumId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="vipPrice != null">
+				#{vipPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="siteNo != null">
+				#{siteNo,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.bmtaholic.badminton.entity.Site">
+		update site
+		<set>
+			<if test="gymnasiumId != null">
+				gymnasium_id = #{gymnasiumId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				`type` = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="vipPrice != null">
+				vip_price = #{vipPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				`status` = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="siteNo != null">
+				`site_no` = #{siteNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where site_id = #{siteId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.bmtaholic.badminton.entity.Site">
+		update site
+		set gymnasium_id =
+		#{gymnasiumId,jdbcType=INTEGER},
+		`type` = #{type,jdbcType=INTEGER},
+		price = #{price,jdbcType=DECIMAL},
+		vip_price =
+		#{vipPrice,jdbcType=DECIMAL},
+		`status` = #{status,jdbcType=INTEGER},
+		`site_no` = #{siteNo,jdbcType=VARCHAR}
+		where site_id =
+		#{siteId,jdbcType=INTEGER}
+	</update>
+</mapper>

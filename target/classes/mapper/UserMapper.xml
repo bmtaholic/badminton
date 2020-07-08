@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmtaholic.badminton.mapper.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.User">
+		<id column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="password" jdbcType="CHAR" property="password" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="created_at" jdbcType="CHAR"
+			property="createdAt" />
+		<result column="last_login" jdbcType="CHAR"
+			property="lastLogin" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, `name`, phone, `password`, `status`, created_at,
+		last_login
+	</sql>
+	<select id="checkUserLogin" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByPhone" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where user_id = #{userId,jdbcType=CHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from user
+		where user_id = #{userId,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" keyColumn="user_id" keyProperty="userId"
+		parameterType="com.bmtaholic.badminton.entity.User"
+		useGeneratedKeys="true">
+		insert into user (user_id, `name`, phone, `password`,
+		`status`, created_at, last_login
+		)
+		values (#{userId,jdbcType=CHAR},
+		#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+		#{password,jdbcType=CHAR},
+		#{status,jdbcType=INTEGER},
+		#{createdAt,jdbcType=CHAR}, #{lastLogin,jdbcType=CHAR}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="user_id"
+		keyProperty="userId"
+		parameterType="com.bmtaholic.badminton.entity.User"
+		useGeneratedKeys="true">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,
+			<if test="name != null">
+				`name`,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="password != null">
+				`password`,
+			</if>
+			<if test="status != null">
+				`status`,
+			</if>
+			<if test="createdAt != null">
+				created_at,
+			</if>
+			<if test="lastLogin != null">
+				last_login,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{userId,jdbcType=CHAR},
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=CHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createdAt != null">
+				#{createdAt,jdbcType=CHAR},
+			</if>
+			<if test="lastLogin != null">
+				#{lastLogin,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.bmtaholic.badminton.entity.User">
+		update user
+		<set>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				`password` = #{password,jdbcType=CHAR},
+			</if>
+			<if test="status != null">
+				`status` = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createdAt != null">
+				created_at = #{createdAt,jdbcType=CHAR},
+			</if>
+			<if test="lastLogin != null">
+				last_login = #{lastLogin,jdbcType=CHAR},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.bmtaholic.badminton.entity.User">
+		update user
+		set `name` = #{name,jdbcType=VARCHAR},
+		phone =
+		#{phone,jdbcType=VARCHAR},
+		`password` = #{password,jdbcType=CHAR},
+		`status` = #{status,jdbcType=INTEGER},
+		created_at =
+		#{createdAt,jdbcType=CHAR},
+		last_login = #{lastLogin,jdbcType=CHAR}
+		where user_id = #{userId,jdbcType=CHAR}
+	</update>
+</mapper>

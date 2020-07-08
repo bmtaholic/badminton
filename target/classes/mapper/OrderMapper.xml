@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmtaholic.badminton.mapper.OrderMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.Order">
+		<id column="order_id" jdbcType="CHAR" property="orderId" />
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="gymnasium_id" jdbcType="INTEGER"
+			property="gymnasiumId" />
+		<result column="site_no" jdbcType="VARCHAR" property="siteNo" />
+		<result column="start_time" jdbcType="CHAR"
+			property="startTime" />
+		<result column="stop_time" jdbcType="CHAR" property="stopTime" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		order_id, user_id, gymnasium_id, site_no, start_time,
+		stop_time, phone
+	</sql>
+	<select id="selectByPhone" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from `order`
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from order
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from order
+		where order_id = #{orderId,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" keyColumn="order_id" keyProperty="orderId"
+		parameterType="com.bmtaholic.badminton.entity.Order"
+		useGeneratedKeys="true">
+		insert into order (user_id, gymnasium_id, site_no,
+		start_time, stop_time, phone
+		)
+		values (#{userId,jdbcType=CHAR},
+		#{gymnasiumId,jdbcType=INTEGER},
+		#{siteNo,jdbcType=VARCHAR},
+		#{startTime,jdbcType=CHAR}, #{stopTime,jdbcType=CHAR},
+		#{phone,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" keyColumn="order_id"
+		keyProperty="orderId"
+		parameterType="com.bmtaholic.badminton.entity.Order"
+		useGeneratedKeys="true">
+		insert into order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="gymnasiumId != null">
+				gymnasium_id,
+			</if>
+			<if test="siteNo != null">
+				site_no,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="stopTime != null">
+				stop_time,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=CHAR},
+			</if>
+			<if test="gymnasiumId != null">
+				#{gymnasiumId,jdbcType=INTEGER},
+			</if>
+			<if test="siteNo != null">
+				#{siteNo,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=CHAR},
+			</if>
+			<if test="stopTime != null">
+				#{stopTime,jdbcType=CHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.bmtaholic.badminton.entity.Order">
+		update order
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=CHAR},
+			</if>
+			<if test="gymnasiumId != null">
+				gymnasium_id = #{gymnasiumId,jdbcType=INTEGER},
+			</if>
+			<if test="siteNo != null">
+				site_no = #{siteNo,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=CHAR},
+			</if>
+			<if test="stopTime != null">
+				stop_time = #{stopTime,jdbcType=CHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where order_id = #{orderId,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.bmtaholic.badminton.entity.Order">
+		update order
+		set user_id = #{userId,jdbcType=CHAR},
+		gymnasium_id = #{gymnasiumId,jdbcType=INTEGER},
+		site_no =
+		#{siteNo,jdbcType=VARCHAR},
+		start_time = #{startTime,jdbcType=CHAR},
+		stop_time = #{stopTime,jdbcType=CHAR},
+		phone =
+		#{phone,jdbcType=VARCHAR}
+		where order_id = #{orderId,jdbcType=CHAR}
+	</update>
+</mapper>

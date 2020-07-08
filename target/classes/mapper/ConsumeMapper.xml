@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmtaholic.badminton.mapper.ConsumeMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.Consume">
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="consume_time" jdbcType="VARCHAR"
+			property="consumeTime" />
+		<result column="consume_money" jdbcType="VARCHAR"
+			property="consumeMoney" />
+		<result column="consume_type" jdbcType="VARCHAR"
+			property="consumeType" />
+		<result column="balance" jdbcType="VARCHAR" property="balance" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`phone`,`consume_time`,`consume_money`,`consume_type`,`balance`,`name`
+	</sql>
+	<select id="queryByPhone" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from consume
+		where phone = #{phone,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert"
+		parameterType="com.bmtaholic.badminton.entity.Consume">
+		insert into consume (phone, consume_time, consume_money,
+		consume_type, balance, `name`
+		)
+		values (#{phone,jdbcType=VARCHAR}, #{consumeTime,jdbcType=VARCHAR},
+		#{consumeMoney,jdbcType=VARCHAR},
+		#{consumeType,jdbcType=VARCHAR}, #{balance,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.bmtaholic.badminton.entity.Consume">
+		insert into consume
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="consumeTime != null">
+				consume_time,
+			</if>
+			<if test="consumeMoney != null">
+				consume_money,
+			</if>
+			<if test="consumeType != null">
+				consume_type,
+			</if>
+			<if test="balance != null">
+				balance,
+			</if>
+			<if test="name != null">
+				`name`,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeTime != null">
+				#{consumeTime,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeMoney != null">
+				#{consumeMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="consumeType != null">
+				#{consumeType,jdbcType=VARCHAR},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>

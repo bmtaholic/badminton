@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bmtaholic.badminton.mapper.BookMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.Book">
+		<id column="book_id" jdbcType="CHAR" property="bookId" />
+		<id column="gym_id" jdbcType="INTEGER" property="gymId" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="start_time" jdbcType="CHAR"
+			property="startTime" />
+		<result column="end_time" jdbcType="CHAR" property="endTime" />
+		<result column="site_no" jdbcType="VARCHAR" property="siteNo" />
+		<result column="create_at" jdbcType="CHAR" property="createAt" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		`book_id`,`gym_id`,`phone`,`start_time`,`end_time`,`site_no`,`create_at`
+	</sql>
+
+	<select id="selectByPhone" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from `book`
+		where `phone` = #{item.phone,jdbcType=VARCHAR}
+	</select>
+
+	<select id="queryList"
+		parameterType="com.bmtaholic.badminton.entity.Book"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from book
+		where gym_id = #{gymId,jdbcType=INTEGER}
+		and start_time <![CDATA[ > ]]>
+		#{startTime,jdbcType=CHAR}
+		and end_time <![CDATA[ < ]]>
+		#{endTime,jdbcType=CHAR}
+	</select>
+
+	<insert id="insert4list" keyColumn="book_id"
+		keyProperty="bookId" parameterType="java.util.ArrayList">
+		insert into book (book_id, gym_id, phone, start_time,
+		end_time,
+		site_no, create_at) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.bookId,jdbcType=CHAR},
+			#{item.gymId,jdbcType=INTEGER},
+			#{item.phone,jdbcType=VARCHAR},
+			#{item.startTime,jdbcType=CHAR},
+			#{item.endTime,jdbcType=CHAR},
+			#{item.siteNo,jdbcType=VARCHAR},
+			#{item.createAt,jdbcType=CHAR})
+		</foreach>
+	</insert>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from book
+		where book_id = #{bookId,jdbcType=CHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from book
+		where book_id = #{bookId,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" keyColumn="book_id" keyProperty="bookId"
+		parameterType="com.bmtaholic.badminton.entity.Book"
+		useGeneratedKeys="true">
+		insert into book (book_id, gym_id, phone, start_time,
+		end_time,
+		site_no, create_at)
+		values (
+		#{bookId,jdbcType=CHAR},
+		#{gymId,jdbcType=INTEGER},
+		#{phone,jdbcType=VARCHAR},
+		#{startTime,jdbcType=CHAR},
+		#{endTime,jdbcType=CHAR},
+		#{siteNo,jdbcType=VARCHAR},
+		#{createAt,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="book_id"
+		keyProperty="bookId"
+		parameterType="com.bmtaholic.badminton.entity.Book"
+		useGeneratedKeys="true">
+		insert into book
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			book_id,
+			<if test="gymId != null">
+				gym_id,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="siteNo != null">
+				site_no,
+			</if>
+			<if test="createAt != null">
+				create_at,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{bookId,jdbcType=CHAR},
+			<if test="gymId != null">
+				#{gymId,jdbcType=INTEGER},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				#{startTime,jdbcType=CHAR},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=CHAR},
+			</if>
+			<if test="siteNo != null">
+				#{siteNo,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				#{createAt,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.bmtaholic.badminton.entity.Book">
+		update book
+		<set>
+			<if test="gymId != null">
+				#{gymId,jdbcType=INTEGER},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=CHAR},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=CHAR},
+			</if>
+			<if test="siteNo != null">
+				site_no = #{siteNo,jdbcType=VARCHAR},
+			</if>
+			<if test="createAt != null">
+				create_at = #{createAt,jdbcType=CHAR},
+			</if>
+		</set>
+		where book_id = #{bookId,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.bmtaholic.badminton.entity.Book">
+		update book
+		set phone = #{phone,jdbcType=VARCHAR},
+		gym_id
+		= #{gymId,jdbcType=INTEGER},
+		start_time = #{startTime,jdbcType=CHAR},
+		end_time =
+		#{endTime,jdbcType=CHAR},
+		site_no =
+		#{siteNo,jdbcType=VARCHAR},
+		create_at = #{createAt,jdbcType=CHAR}
+		where
+		book_id =
+		#{bookId,jdbcType=CHAR}
+	</update>
+</mapper>

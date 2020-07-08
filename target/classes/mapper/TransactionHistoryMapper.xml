@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.bmtaholic.badminton.mapper.TransactionHistoryMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.TransactionHistory">
+		<id column="history_id" jdbcType="INTEGER" property="historyId" />
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="gym_id" jdbcType="INTEGER" property="gymId" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="sum" jdbcType="DECIMAL" property="sum" />
+		<result column="real_sum" jdbcType="DECIMAL" property="realSum" />
+		<result column="created_at" jdbcType="VARCHAR"
+			property="createdAt" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		history_id, user_id, gym_id, `type`, `sum`, real_sum,
+		created_at, remark
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from transaction_history
+		where history_id =
+		#{historyId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from transaction_history
+		where history_id =
+		#{historyId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" keyColumn="history_id"
+		keyProperty="historyId"
+		parameterType="com.bmtaholic.badminton.entity.TransactionHistory"
+		useGeneratedKeys="true">
+		insert into transaction_history (user_id, gym_id,
+		`type`,
+		`sum`, real_sum, created_at,
+		remark)
+		values
+		(#{userId,jdbcType=CHAR}, #{gymId,jdbcType=INTEGER},
+		#{type,jdbcType=INTEGER},
+		#{sum,jdbcType=DECIMAL},
+		#{realSum,jdbcType=DECIMAL}, #{createdAt,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" keyColumn="history_id"
+		keyProperty="historyId"
+		parameterType="com.bmtaholic.badminton.entity.TransactionHistory"
+		useGeneratedKeys="true">
+		insert into transaction_history
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,gym_id,`type`,`sum`,real_sum,created_at,
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=CHAR},
+				#{gymId,jdbcType=INTEGER},
+				#{type,jdbcType=INTEGER},
+				#{sum,jdbcType=DECIMAL},
+				#{realSum,jdbcType=DECIMAL},
+				#{createdAt,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.bmtaholic.badminton.entity.TransactionHistory">
+		update transaction_history
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=CHAR},
+			</if>
+			<if test="gymId != null">
+				gym_id = #{gymId,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				`type` = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="sum != null">
+				`sum` = #{sum,jdbcType=DECIMAL},
+			</if>
+			<if test="realSum != null">
+				real_sum = #{realSum,jdbcType=DECIMAL},
+			</if>
+			<if test="createdAt != null">
+				created_at = #{createdAt,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where history_id = #{historyId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.bmtaholic.badminton.entity.TransactionHistory">
+		update transaction_history
+		set user_id =
+		#{userId,jdbcType=CHAR},
+		gym_id = #{gymId,jdbcType=INTEGER},
+		`type` =
+		#{type,jdbcType=INTEGER},
+		`sum` = #{sum,jdbcType=DECIMAL},
+		real_sum =
+		#{realSum,jdbcType=DECIMAL},
+		created_at =
+		#{createdAt,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR}
+		where history_id = #{historyId,jdbcType=INTEGER}
+	</update>
+</mapper>

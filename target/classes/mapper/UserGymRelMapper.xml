@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.bmtaholic.badminton.mapper.UserGymRelMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bmtaholic.badminton.entity.UserGymRel">
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="gym_id" jdbcType="INTEGER" property="gymId" />
+		<result column="is_vip" jdbcType="INTEGER" property="isVip" />
+		<result column="created_at" jdbcType="VARCHAR"
+			property="createdAt" />
+		<result column="latest_consume" jdbcType="VARCHAR"
+			property="latestConsume" />
+		<result column="integration" jdbcType="INTEGER"
+			property="integration" />
+		<result column="balance" jdbcType="DECIMAL" property="balance" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		`user_id`, `gym_id`, `is_vip`, `created_at`,
+		`latest_consume`,
+		`integration`, `balance`
+	</sql>
+
+	<select id="selectByUserIdAndGymId"
+		parameterType="com.bmtaholic.badminton.entity.UserGymRel"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_gym_rel
+		where user_id = #{userId,jdbcType=CHAR}
+		and gym_id =
+		#{gymId,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert"
+		parameterType="com.bmtaholic.badminton.entity.UserGymRel">
+		insert into user_gym_rel (user_id, gym_id, is_vip,
+		created_at, latest_consume, integration,
+		balance)
+		values
+		(#{userId,jdbcType=CHAR}, #{gymId,jdbcType=INTEGER},
+		#{isVip,jdbcType=INTEGER},
+		#{createdAt,jdbcType=VARCHAR},
+		#{latestConsume,jdbcType=VARCHAR}, #{integration,jdbcType=INTEGER},
+		#{balance,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.bmtaholic.badminton.entity.UserGymRel">
+		insert into user_gym_rel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="gymId != null">
+				gym_id,
+			</if>
+			<if test="isVip != null">
+				is_vip,
+			</if>
+			<if test="createdAt != null">
+				created_at,
+			</if>
+			<if test="latestConsume != null">
+				latest_consume,
+			</if>
+			<if test="integration != null">
+				integration,
+			</if>
+			<if test="balance != null">
+				balance,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=CHAR},
+			</if>
+			<if test="gymId != null">
+				#{gymId,jdbcType=INTEGER},
+			</if>
+			<if test="isVip != null">
+				#{isVip,jdbcType=INTEGER},
+			</if>
+			<if test="createdAt != null">
+				#{createdAt,jdbcType=VARCHAR},
+			</if>
+			<if test="latestConsume != null">
+				#{latestConsume,jdbcType=VARCHAR},
+			</if>
+			<if test="integration != null">
+				#{integration,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateBalanceAndIntegrationForRecharge"
+		parameterType="com.bmtaholic.badminton.entity.Site">
+		update user_gym_rel
+		<set>
+			latest_consume = #{latestConsume,jdbcType=VARCHAR},
+			<if test="balance != null">
+				balance = balance + #{balance,jdbcType=DECIMAL},
+			</if>
+			<if test="integration != null">
+				integration = balance + #{integration,jdbcType=INTEGER},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=CHAR}
+		and gym_id =
+		#{gymId,jdbcType=INTEGER}
+	</update>
+</mapper>
